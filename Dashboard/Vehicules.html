@@ -1,0 +1,311 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <title>Editable Car Table</title>
+    <!-- Primary Meta Tags -->
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="title" content="Editable Car Table" />
+    <meta name="author" content="CarRentalCo" />
+    <meta name="description" content="Editable Car Table using Bootstrap." />
+    <meta name="keywords" content="car rental, vehicle management, editable table, bootstrap" />
+    <!-- Fonts -->
+    <link href="https://cdn.jsdelivr.net/npm/@fontsource/inter@3.0.1/dist/index.css" />
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.2/dist/css/bootstrap.min.css" />
+    <!-- Bootstrap Icons -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css" />
+    <!-- Custom CSS for Dark Mode and Animations -->
+    <style>
+        /* Dark Mode Styles */
+        .dark-mode {
+            background-color: #121212;
+            color: #ffffff;
+        }
+        .dark-mode .card {
+            background-color: #1e1e1e;
+            color: #ffffff;
+        }
+        .dark-mode .navbar {
+            background-color: #1e1e1e !important;
+        }
+        .dark-mode .list-group-item {
+            background-color: #1e1e1e;
+            color: #ffffff;
+        }
+        .dark-mode .alert {
+            background-color: #1e1e1e;
+            color: #ffffff;
+        }
+
+        /* Card Hover Animation */
+        .card {
+            transition: transform 0.3s ease;
+        }
+        .card:hover {
+            transform: translateY(-5px);
+        }
+
+        /* Editable Table Styles */
+        #carTable img {
+            width: 100px;
+            height: auto;
+        }
+        #carTable input[type="text"],
+        #carTable input[type="number"] {
+            width: 100%;
+            padding: 5px;
+            box-sizing: border-box;
+        }
+        #carTable button {
+            margin: 2px;
+        }
+    </style>
+</head>
+<body class="bg-light">
+    <!-- Loading Spinner -->
+    <div id="loadingSpinner" class="text-center mt-5">
+        <div class="spinner-border text-primary" role="status">
+            <span class="visually-hidden">Loading...</span>
+        </div>
+    </div>
+
+    <div class="container-fluid">
+        <!-- Navbar -->
+        <nav class="navbar navbar-expand-lg navbar-light bg-white shadow">
+            <div class="container-fluid">
+                <a class="navbar-brand" href="#">Car Rental Dashboard</a>
+                <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+                    <span class="navbar-toggler-icon"></span>
+                </button>
+                <div class="collapse navbar-collapse" id="navbarNav">
+                    <ul class="navbar-nav ms-auto">
+                        <li class="nav-item">
+                            <a class="nav-link" href="testDashboard.html">Home</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="#">Contact</a>
+                        </li>
+                        <!-- Dark Mode Toggle -->
+                        <li class="nav-item ms-3">
+                            <div class="form-check form-switch">
+                                <input class="form-check-input" type="checkbox" id="darkModeToggle">
+                                <label class="form-check-label" for="darkModeToggle">Dark Mode</label>
+                            </div>
+                        </li>
+                        <!-- Admin Dropdown -->
+                        <li class="nav-item dropdown">
+                            <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                                Admin
+                            </a>
+                            <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
+                                <li><a class="dropdown-item" href="#">Profile</a></li>
+                                <li><a class="dropdown-item" href="#">Sign Out</a></li>
+                            </ul>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </nav>
+
+        <!-- Welcome Message -->
+        <div class="alert alert-info mt-4">
+            Welcome back, <strong>Admin</strong>! Here's what's happening today.
+        </div>
+
+        <!-- Main Content -->
+        <div class="row">
+            <!-- Sidebar -->
+            <div class="col-lg-2 bg-white shadow">
+                <div class="sidebar p-3">
+                    <h5 class="mb-4">Menu</h5>
+                    <ul class="nav flex-column">
+                        <li class="nav-item">
+                            <a class="nav-link active" href="Dashbord.html">Dashboard</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="Vehicules.html">Vehicles</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="Rentals.html">Rentals</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="Custumers.html">Customers</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="#">Reports</a>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+
+            <!-- Main Content -->
+            <div class="col-lg-10">
+                <!-- Editable Car Table -->
+                <div class="card shadow">
+                    <div class="card-body">
+                        <h4 class="card-title">Vehicle Management</h4>
+                        <table id="carTable" class="table">
+                            <thead>
+                                <tr>
+                                    <th>Category</th>
+                                    <th>Car Name</th>
+                                    <th>Color</th>
+                                    <th>Number of Rents</th>
+                                    <th>Actions</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <!-- Rows will be added dynamically -->
+                            </tbody>
+                        </table>
+                        <button id="addRowBtn" class="btn btn-primary">Add New Car</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Footer -->
+        <footer class="mt-5 py-4 bg-white shadow">
+            <div class="container-fluid text-center">
+                <p class="mb-0">&copy; 2023 Car Rental Co. All rights reserved.</p>
+                <p class="mb-0"><a href="#">Privacy Policy</a> | <a href="#">Terms of Service</a></p>
+            </div>
+        </footer>
+    </div>
+
+    <!-- Bootstrap JS -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.2/dist/js/bootstrap.bundle.min.js"></script>
+
+    <!-- Custom JS -->
+    <script>// na9ss l local storage
+        // Hide loading spinner once data is loaded
+        document.getElementById('loadingSpinner').style.display = 'none';
+
+        // Dark Mode Toggle
+        document.getElementById('darkModeToggle').addEventListener('change', function() {
+            document.body.classList.toggle('dark-mode');
+        });
+
+        // Editable Table Functionality
+        document.addEventListener('DOMContentLoaded', function () {
+            const tableBody = document.querySelector('#carTable tbody');
+            const addRowBtn = document.getElementById('addRowBtn');
+
+            // Function to add a new row to the table
+            function addRow() {
+                const newRow = document.createElement('tr');
+
+                newRow.innerHTML = `
+                    <td><input type="text" placeholder="Category"></td>
+                    <td><input type="text" placeholder="Car Name"></td>
+                    <td><input type="text" placeholder="Color"></td>
+                    <td><input type="number" placeholder="Number of Rents"></td>
+                    <td>
+                        <button class="btn btn-success btn-sm saveBtn">Save</button>
+                        <button class="btn btn-danger btn-sm cancelBtn">Cancel</button>
+                    </td>
+                `;
+
+                tableBody.appendChild(newRow);
+
+                // Add event listeners to the new buttons
+                const saveBtn = newRow.querySelector('.saveBtn');
+                const cancelBtn = newRow.querySelector('.cancelBtn');
+
+                saveBtn.addEventListener('click', function () {
+                    saveRow(newRow);
+                });
+
+                cancelBtn.addEventListener('click', function () {
+                    tableBody.removeChild(newRow);
+                });
+            }
+
+            // Function to save the row
+            function saveRow(row) {
+                const inputs = row.querySelectorAll('input');
+                const cells = row.querySelectorAll('td');
+
+                inputs.forEach((input, index) => {
+                    cells[index].innerHTML = input.value;
+                });
+
+                // Add edit and delete buttons
+                cells[4].innerHTML = `
+                    <button class="btn btn-warning btn-sm editBtn">Edit</button>
+                    <button class="btn btn-danger btn-sm deleteBtn">Delete</button>
+                `;
+
+                // Add event listeners to the new buttons
+                const editBtn = cells[4].querySelector('.editBtn');
+                const deleteBtn = cells[4].querySelector('.deleteBtn');
+
+                editBtn.addEventListener('click', function () {
+                    editRow(row);
+                });
+
+                deleteBtn.addEventListener('click', function () {
+                    tableBody.removeChild(row);
+                });
+            }
+
+            // Function to edit the row
+            function editRow(row) {
+                const cells = row.querySelectorAll('td');
+                const data = [];
+
+                cells.forEach((cell, index) => {
+                    if (index !== 4) { // Skip the actions cell
+                        data.push(cell.innerHTML);
+                    }
+                });
+
+                cells[0].innerHTML = `<input type="text" value="${data[0]}">`;
+                cells[1].innerHTML = `<input type="text" value="${data[1]}">`;
+                cells[2].innerHTML = `<input type="text" value="${data[2]}">`;
+                cells[3].innerHTML = `<input type="number" value="${data[3]}">`;
+
+                cells[4].innerHTML = `
+                    <button class="btn btn-success btn-sm saveBtn">Save</button>
+                    <button class="btn btn-danger btn-sm cancelBtn">Cancel</button>
+                `;
+
+                // Add event listeners to the new buttons
+                const saveBtn = cells[4].querySelector('.saveBtn');
+                const cancelBtn = cells[4].querySelector('.cancelBtn');
+
+                saveBtn.addEventListener('click', function () {
+                    saveRow(row);
+                });
+
+                cancelBtn.addEventListener('click', function () {
+                    cells[0].innerHTML = data[0];
+                    cells[1].innerHTML = data[1];
+                    cells[2].innerHTML = data[2];
+                    cells[3].innerHTML = data[3];
+                    cells[4].innerHTML = `
+                        <button class="btn btn-warning btn-sm editBtn">Edit</button>
+                        <button class="btn btn-danger btn-sm deleteBtn">Delete</button>
+                    `;
+
+                    // Re-add event listeners to the edit and delete buttons
+                    const editBtn = cells[4].querySelector('.editBtn');
+                    const deleteBtn = cells[4].querySelector('.deleteBtn');
+
+                    editBtn.addEventListener('click', function () {
+                        editRow(row);
+                    });
+
+                    deleteBtn.addEventListener('click', function () {
+                        tableBody.removeChild(row);
+                    });
+                });
+            }
+
+            // Add event listener to the "Add New Car" button
+            addRowBtn.addEventListener('click', addRow);
+        });
+    </script>
+</body>
+</html>

@@ -1,0 +1,67 @@
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  font-family: Arial, sans-serif;
+  background-color: #f4f4f4;
+  color: #333;
+}
+
+header {
+  background: #333;
+  color: #fff;
+  padding: 20px 0;
+  text-align: center;
+}
+
+main {
+  padding: 20px;
+}
+
+.car-gallery {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-around;
+}
+
+.car {
+  background: white;
+  border: 1px solid #ddd;
+  border-radius: 5px;
+  margin: 15px;
+  width: calc(30% - 30px);
+  text-align: center;
+  transition: transform 0.2s;
+}
+
+.car img {
+  max-width: 100%;
+  border-top-left-radius: 5px;
+  border-top-right-radius: 5px;
+}
+
+.car h2 {
+  font-size: 1.5em;
+  margin: 10px 0;
+}
+
+.car p {
+  padding: 15px;
+}
+
+.car:hover {
+  transform: scale(1.05);
+}
+
+footer {
+  text-align: center;
+  padding: 20px 0;
+  background: #333;
+  color: #fff;
+  position: absolute;
+  width: 100%;
+  bottom: 0;
+}
