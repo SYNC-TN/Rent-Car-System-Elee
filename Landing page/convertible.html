@@ -1,0 +1,605 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Convertible Car Rental</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #f8f8f8;
+        }
+        /* Header */
+        .header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 10px 50px;
+            background-color: rgba(0, 0, 0, 0.9); /* Semi-transparent black background */
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2); /* Subtle shadow for depth */
+        }
+
+        /* Logo */
+        .logo p {
+            color: white;
+        }
+
+        /* Navigation Menu */
+        .navbar ul {
+            list-style: none;
+            display: flex;
+            gap: 30px; /* Space between menu items */
+            align-items: center;
+        }
+
+        .navbar ul li a {
+            text-decoration: none;
+            color: #fff;
+            font-size: 1rem;
+            font-weight: 500;
+            transition: color 0.3s, transform 0.3s;
+        }
+
+        .navbar ul li a:hover {
+            color: #f5a623; /* Highlight color on hover */
+            transform: translateY(-2px); /* Slight lift effect */
+        }
+
+        /* Dropdown Menu */
+        .dropdown {
+            position: relative;
+            display: inline-block;
+        }
+
+        .dropdown-content {
+            display: none;
+            position: absolute;
+            background-color: #fff;
+            min-width: 300px;
+            box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
+            border-radius: 5px;
+            padding: 20px;
+            z-index: 1001;
+            top: 30px;
+            left: 0;
+        }
+
+        .dropdown-content h3 {
+            color: #333;
+            font-size: 1.2rem;
+            margin-bottom: 10px;
+        }
+
+        .dropdown-content .categories,
+        .dropdown-content .brands {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+        }
+
+        .dropdown-content .categories a,
+        .dropdown-content .brands img {
+            background-color: #f5a623;
+            color: #fff;
+            padding: 5px 10px;
+            border-radius: 5px;
+            text-decoration: none;
+            font-size: 0.9rem;
+            transition: background-color 0.3s;
+        }
+
+        .dropdown-content .categories a:hover {
+            background-color: #e5941f;
+        }
+
+        .dropdown-content .brands img {
+            width: 50px;
+            height: auto;
+            border-radius: 5px;
+        }
+
+        .dropdown:hover .dropdown-content {
+            display: block;
+        }
+        .container {
+            padding: 20px;
+            background-color: rgb(4, 4, 58);
+        }
+        .car-card {
+            display: flex;
+            background-color: white;
+            border-radius: 8px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            overflow: hidden;
+            margin-bottom: 20px;
+        }
+        .car-card img {
+            width: 50%;
+            height: auto;
+        }
+        .car-details {
+            padding: 15px;
+            flex: 1;
+        }
+        .car-details h2 {
+            margin: 0;
+            font-size: 20px;
+            color: #333;
+        }
+        .car-details p {
+            margin: 5px 0;
+            color: #666;
+        }
+        .price {
+            font-size: 18px;
+            color: #ff6600;
+            font-weight: bold;
+        }
+        .buttons {
+            display: flex;
+            gap: 10px;
+            margin-top: 10px;
+        }
+        .button {
+            padding: 10px 15px;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            color: white;
+            font-size: 14px;
+        }
+        .call-button {
+            background-color: #ffa500;
+        }
+        .whatsapp-button {
+            background-color: #25d366;
+        }
+
+        /* New Styles for Added Sections */
+        .search-bar {
+            padding: 20px;
+            background-color: rgb(4, 4, 58);
+            text-align: center;
+        }
+        .search-bar input {
+            padding: 10px;
+            border: none;
+            border-radius: 5px;
+            width: 300px;
+        }
+        .search-bar button {
+            padding: 10px 15px;
+            background-color: #f5a623;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+        .sort-by {
+            padding: 10px;
+            background-color: rgb(4, 4, 58);
+            text-align: center;
+        }
+        .sort-by label {
+            color: white;
+            margin-right: 10px;
+        }
+        .sort-by select {
+            padding: 5px;
+            border-radius: 5px;
+        }
+        .featured-banner {
+            padding: 20px;
+            background-color: rgb(4, 4, 58);
+            text-align: center;
+        }
+        .featured-banner h2 {
+            color: white;
+        }
+        .featured-banner p {
+            color: #ddd;
+        }
+        .why-rent {
+            padding: 20px;
+            background-color: rgb(4, 4, 58);
+            text-align: center;
+        }
+        .why-rent h2 {
+            color: white;
+        }
+        .why-rent ul {
+            list-style: none;
+            padding: 0;
+            color: #ddd;
+        }
+        .why-rent ul li {
+            margin: 10px 0;
+        }
+        .customer-reviews {
+            padding: 20px;
+            background-color: rgb(4, 4, 58);
+            text-align: center;
+        }
+        .customer-reviews h2 {
+            color: white;
+        }
+        .review {
+            background-color: white;
+            border-radius: 10px;
+            padding: 15px;
+            margin: 10px auto;
+            max-width: 500px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        }
+        .review p {
+            color: #333;
+        }
+        .review strong {
+            color: #f5a623;
+        }
+        .cta-banner {
+            padding: 20px;
+            background-color: rgb(4, 4, 58);
+            text-align: center;
+        }
+        .cta-banner h2 {
+            color: white;
+        }
+        .cta-banner p {
+            color: #ddd;
+        }
+        .faq {
+            padding: 20px;
+            background-color: rgb(4, 4, 58);
+            text-align: center;
+        }
+        .faq h2 {
+            color: white;
+        }
+        .faq-item {
+            background-color: white;
+            border-radius: 10px;
+            padding: 15px;
+            margin: 10px auto;
+            max-width: 500px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        }
+        .faq-item h3 {
+            color: #f5a623;
+        }
+        .faq-item p {
+            color: #333;
+        }
+        .contact-us {
+            padding: 20px;
+            background-color: rgb(4, 4, 58);
+            text-align: center;
+        }
+        .contact-us h2 {
+            color: white;
+        }
+        .contact-us p {
+            color: white;
+        }
+        .contact-methods {
+            color: #ddd;
+        }
+        .social-media {
+            padding: 20px;
+            background-color: rgb(4, 4, 58);
+            text-align: center;
+        }
+        .social-media h2 {
+            color: white;
+        }
+        .social-links img {
+            width: 24px;
+            height: 24px;
+            margin: 0 10px;
+        }
+        footer {
+            padding: 20px;
+            background-color: #333;
+            color: white;
+            text-align: center;
+        }
+        .footer-links a {
+            color: #f5a623;
+            text-decoration: none;
+            margin: 0 10px;
+        }
+    </style>
+</head>
+<body>
+    <!-- Header Section -->
+    <header class="header">
+        <!-- Logo -->
+        <div class="logo">
+            <p> <strong>OneTapDrive</strong></p>
+        </div>
+
+        <!-- Navigation Menu -->
+        <nav class="navbar">
+            <ul>
+                <li><a href="final test.html">Home</a></li>
+                <li class="dropdown">
+                    <a href="#">Categories & Brands</a>
+                    <div class="dropdown-content">
+                        <h3>Car Categories</h3>
+                        <div class="categories">
+                            <a href="suv.html">SUV</a>
+                            <a href="sedan.html">Sedan</a>
+                            <a href="luxury.html">Luxury</a>
+                            <a href="crossover.html">Crossover</a>
+                            <a href="compact.html">Compact</a>
+                            <a href="convertible.html">Convertible</a>
+                            <a href="sport.html">Sport</a>
+                            <a href="electric.html">Electric</a>
+                        </div>
+                        <h3>Car Brands</h3>
+                        <div class="brands">
+                            <img src="https://example.com/toyota.png" alt="Toyota">
+                            <img src="https://example.com/bmw.png" alt="BMW">
+                            <img src="https://example.com/audi.png" alt="Audi">
+                            <img src="https://example.com/mercedes.png" alt="Mercedes">
+                            <img src="https://example.com/ford.png" alt="Ford">
+                            <img src="https://example.com/honda.png" alt="Honda">
+                        </div>
+                    </div>
+                </li>
+                <li><a href="services.html">Services</a></li>
+                <li><a href="contact.html">Contact</a></li>
+            </ul>
+        </nav>
+    </header>
+
+    <!-- Search Bar -->
+    <div class="search-bar">
+        <input type="text" id="searchInput" placeholder="Search for convertible models...">
+        <button class="button" onclick="searchCars()">Search</button>
+    </div>
+
+    <!-- Sort By Dropdown -->
+    <div class="sort-by">
+        <label for="sort">Sort By:</label>
+        <select id="sort" onchange="sortCars()">
+            <option value="default">Default</option>
+            <option value="price-low-to-high">Price: Low to High</option>
+            <option value="price-high-to-low">Price: High to Low</option>
+        </select>
+    </div>
+
+    <!-- Featured Convertible Cars Banner -->
+    <div class="featured-banner">
+        <h2>Featured Convertible Cars</h2>
+        <p>Check out our top picks for this month!</p>
+    </div>
+
+    <!-- Why Rent a Convertible Car Section -->
+    <div class="why-rent">
+        <h2>Why Rent a Convertible Car?</h2>
+        <ul>
+            <li>✅ Enjoy the thrill of open-top driving.</li>
+            <li>✅ Perfect for scenic drives and sunny weather.</li>
+            <li>✅ Stylish and luxurious for special occasions.</li>
+            <li>✅ Great for couples and solo adventurers.</li>
+        </ul>
+    </div>
+
+    <div class="container">
+        <!-- Car 1 -->
+        <div class="car-card">
+            <img src="Convertible cars/conv.1.jpeg" alt="Chevrolet Corvette 2021">
+            <div class="car-details">
+                <h2>Chevrolet Corvette 2021</h2>
+                <p>Unleash the Power of the 2021 Chevrolet Corvette
+                    The 2021 Chevrolet Corvette is a true American icon, offering exhilarating performance, precision handling, and bold, stunning design. With its mid-engine layout, roaring V8 engine, and a sleek, aerodynamic exterior, it delivers the ultimate driving experience. Whether you're cruising through scenic roads or making a statement on a special occasion, the Corvette guarantees excitement. Rent the Chevrolet Corvette today and feel the thrill of driving a legendary sports car!
+                </p>
+                <p>Convertible | 2 Seats | 2 Bags</p>
+                <p class="price">AED 1000 / Daily</p>
+                <div class="buttons">
+                    <button class="button call-button">Call</button>
+                    <button class="button whatsapp-button">WhatsApp</button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Car 2 -->
+        <div class="car-card">
+            <img src="Convertible cars/conv.2.jpeg" alt="BMW 440i 2022">
+            <div class="car-details">
+                <h2>BMW 440i 2022</h2>
+                <p>Drive in Style with the 2022 BMW 440i
+                    The 2022 BMW 440i delivers a perfect combination of sporty performance and luxurious comfort. With its powerful engine, precise handling, and sleek design, it’s built for those who crave excitement on the road. Inside, enjoy premium materials, cutting-edge technology, and a refined driving experience. Whether for a weekend getaway or a special occasion, the BMW 440i guarantees you’ll turn heads. Rent the 440i today and experience the thrill of driving a true performance luxury coupe!
+                </p>
+                <p>Convertible | 2 Seats | 2 Bags</p>
+                <p class="price">AED 600 / Daily</p>
+                <div class="buttons">
+                    <button class="button call-button">Call</button>
+                    <button class="button whatsapp-button">WhatsApp</button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Car 3 -->
+        <div class="car-card">
+            <img src="Convertible cars/conv.3.jpeg" alt="Ferrari Portofino">
+            <div class="car-details">
+                <h2>Ferrari Portofino</h2>
+                <p>
+                    Indulge in Luxury with the Ferrari Portofino
+                    The Ferrari Portofino is a stunning blend of performance, elegance, and open-air freedom. With its roaring V8 engine, sleek design, and luxurious interior, it offers an exhilarating driving experience like no other. Perfect for special occasions, scenic drives, or simply indulging in the ultimate thrill, the Portofino guarantees unforgettable moments on every journey. Rent the Ferrari Portofino today and experience the height of automotive excellence!
+                </p>
+                <p>Convertible | 2 Seats | 1 Bag</p>
+                <p class="price">AED 1500 / Daily</p>
+                <div class="buttons">
+                    <button class="button call-button">Call</button>
+                    <button class="button whatsapp-button">WhatsApp</button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Car 4 -->
+        <div class="car-card">
+            <img src="Convertible cars/conv.4.jpeg" alt="Audi A5 Convertible">
+            <div class="car-details">
+                <h2>Audi A5 Convertible</h2>
+                <p>Embrace the Open Road with the Audi A5 Convertible
+                    The Audi A5 Convertible combines sporty performance, elegant design, and the freedom of open-air driving. With its powerful engine, luxurious interior, and cutting-edge tech, it’s perfect for enjoying sunny days, scenic drives, or making a statement on special occasions. Whether you're cruising through the city or along the coast, the A5 Convertible ensures a thrilling, comfortable ride. Rent the Audi A5 Convertible today and experience luxury without limits!
+                </p>
+                <p>Convertible | 4 Seats | 2 Bags</p>
+                <p class="price">AED 800 / Daily</p>
+                <div class="buttons">
+                    <button class="button call-button">Call</button>
+                    <button class="button whatsapp-button">WhatsApp</button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Car 5 -->
+        <div class="car-card">
+            <img src="Convertible cars/conv.5.jpeg" alt="Mercedes-Benz C-Class">
+            <div class="car-details">
+                <h2>Mercedes-Benz C-Class</h2>
+                <p>Luxury and Performance with the Mercedes-Benz C-Class
+                    The Mercedes-Benz C-Class is the perfect blend of elegance, performance, and advanced technology. With its sleek design, refined interior, and smooth handling, it offers a premium driving experience for any occasion. Whether you’re traveling for business, leisure, or making a statement on a special day, the C-Class delivers unmatched comfort and style. Rent the Mercedes-Benz C-Class today and elevate your journey with luxury and precision!
+                </p>
+                <p>Convertible | 4 Seats | 2 Bags</p>
+                <p class="price">AED 900 / Daily</p>
+                <div class="buttons">
+                    <button class="button call-button">Call</button>
+                    <button class="button whatsapp-button">WhatsApp</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Customer Reviews Section -->
+    <div class="customer-reviews">
+        <h2>What Our Customers Say</h2>
+        <div class="review">
+            <p>"The Ferrari Portofino was a dream to drive. Highly recommend!"</p>
+            <p><strong>- John Doe</strong></p>
+        </div>
+        <div class="review">
+            <p>"Excellent service and the BMW 440i was a joy to drive. Will rent again!"</p>
+            <p><strong>- Jane Smith</strong></p>
+        </div>
+    </div>
+
+    <!-- Call to Action Banner -->
+    <div class="cta-banner">
+        <h2>Ready to Rent Your Dream Convertible Car?</h2>
+        <p>Book now and enjoy the best deals in Tunisia!</p>
+        <button class="button call-button">Call to Book</button>
+        <button class="button whatsapp-button">WhatsApp Us</button>
+    </div>
+
+    <!-- Frequently Asked Questions Section -->
+    <div class="faq">
+        <h2>Frequently Asked Questions</h2>
+        <div class="faq-item">
+            <h3>What documents do I need to rent a convertible car?</h3>
+            <p>You need a valid driver's license, ID, and a credit card for the security deposit.</p>
+        </div>
+        <div class="faq-item">
+            <h3>Can I rent a convertible car for long trips?</h3>
+            <p>Yes, our convertible cars are perfect for both city drives and long trips.</p>
+        </div>
+        <div class="faq-item">
+            <h3>Is insurance included in the rental price?</h3>
+            <p>Basic insurance is included, but you can upgrade to comprehensive coverage for added protection.</p>
+        </div>
+    </div>
+
+    <!-- Contact Us Section -->
+    <div class="contact-us">
+        <h2>Contact Us</h2>
+        <p>Have questions? Reach out to us anytime!</p>
+        <div class="contact-methods">
+            <p>📞 Call: +216 12 345 678</p>
+            <p>📧 Email: info@convertiblecarrental.com</p>
+            <p>📍 Address: Tunis, Tunisia</p>
+        </div>
+    </div>
+
+    <!-- Social Media Links -->
+    <div class="social-media">
+        <h2>Follow Us</h2>
+        <div class="social-links">
+            <a href="https://www.facebook.com/"><img src="Reseaux/facebook.png" alt="Facebook"></a>
+            <a href="https://x.com/"><img src="Reseaux/twitter.png" alt="Twitter"></a>
+            <a href="https://www.instagram.com/"><img src="Reseaux/instagram.jpg" alt="Instagram"></a>
+        </div>
+    </div>
+
+    <!-- Footer -->
+    <footer>
+        <p>© 2025 Convertible Car Rental. All Rights Reserved.</p>
+        <div class="footer-links">
+            <a href="#">Privacy Policy</a> |
+            <a href="#">Terms of Service</a> |
+            <a href="contact.html">Contact Us</a>
+        </div>
+    </footer>
+
+    <script>
+        // Close dropdowns when clicking outside
+        window.onclick = function (event) {
+            if (!event.target.matches('.dropdown a')) {
+                const dropdowns = document.querySelectorAll('.dropdown-content');
+                dropdowns.forEach(dropdown => {
+                    dropdown.style.display = 'none';
+                });
+            }
+        };
+
+        // Search functionality
+        function searchCars() {
+            const searchTerm = document.getElementById('searchInput').value.toLowerCase();
+            const carNames = document.querySelectorAll('.car-details h2');
+            carNames.forEach(car => {
+                if (car.textContent.toLowerCase().includes(searchTerm)) {
+                    car.parentElement.parentElement.style.display = 'flex'; // Show matching cars
+                } else {
+                    car.parentElement.parentElement.style.display = 'none'; // Hide non-matching cars
+                }
+            });
+        }
+
+        // Sort functionality
+        function sortCars() {
+            const sortValue = document.getElementById('sort').value;
+            const container = document.querySelector('.container');
+            const carCards = Array.from(document.querySelectorAll('.car-card'));
+
+            if (sortValue === 'price-low-to-high') {
+                carCards.sort((a, b) => {
+                    const priceA = parseInt(a.querySelector('.price').textContent.replace(/\D/g, ''));
+                    const priceB = parseInt(b.querySelector('.price').textContent.replace(/\D/g, ''));
+                    return priceA - priceB;
+                });
+            } else if (sortValue === 'price-high-to-low') {
+                carCards.sort((a, b) => {
+                    const priceA = parseInt(a.querySelector('.price').textContent.replace(/\D/g, ''));
+                    const priceB = parseInt(b.querySelector('.price').textContent.replace(/\D/g, ''));
+                    return priceB - priceA;
+                });
+            } else {
+                carCards.sort((a, b) => {
+                    return 0; // Default order
+                });
+            }
+
+            // Clear the container and append sorted cars
+            container.innerHTML = '';
+            carCards.forEach(car => container.appendChild(car));
+        }
+    </script>
+</body>
+</html>

@@ -1,0 +1,650 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Compact Car Rental</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #f8f8f8;
+        }
+        /* Header */
+        .header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 10px 50px;
+            background-color: rgba(0, 0, 0, 0.9); /* Semi-transparent black background */
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2); /* Subtle shadow for depth */
+        }
+
+        /* Logo */
+        .logo p {
+            color: white;
+        }
+
+        /* Navigation Menu */
+        .navbar ul {
+            list-style: none;
+            display: flex;
+            gap: 30px; /* Space between menu items */
+            align-items: center;
+        }
+
+        .navbar ul li a {
+            text-decoration: none;
+            color: #fff;
+            font-size: 1rem;
+            font-weight: 500;
+            transition: color 0.3s, transform 0.3s;
+        }
+
+        .navbar ul li a:hover {
+            color: #f5a623; /* Highlight color on hover */
+            transform: translateY(-2px); /* Slight lift effect */
+        }
+
+        /* Dropdown Menu */
+        .dropdown {
+            position: relative;
+            display: inline-block;
+        }
+
+        .dropdown-content {
+            display: none;
+            position: absolute;
+            background-color: #fff;
+            min-width: 300px;
+            box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
+            border-radius: 5px;
+            padding: 20px;
+            z-index: 1001;
+            top: 30px;
+            left: 0;
+        }
+
+        .dropdown-content h3 {
+            color: #333;
+            font-size: 1.2rem;
+            margin-bottom: 10px;
+        }
+
+        .dropdown-content .categories,
+        .dropdown-content .brands {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+        }
+
+        .dropdown-content .categories a,
+        .dropdown-content .brands img {
+            background-color: #f5a623;
+            color: #fff;
+            padding: 5px 10px;
+            border-radius: 5px;
+            text-decoration: none;
+            font-size: 0.9rem;
+            transition: background-color 0.3s;
+        }
+
+        .dropdown-content .categories a:hover {
+            background-color: #e5941f;
+        }
+
+        .dropdown-content .brands img {
+            width: 50px;
+            height: auto;
+            border-radius: 5px;
+        }
+
+        .dropdown:hover .dropdown-content {
+            display: block;
+        }
+        .container {
+            padding: 20px;
+            background-color: rgb(4, 4, 58);
+        }
+        .car-card {
+            display: flex;
+            background-color: white;
+            border-radius: 8px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            overflow: hidden;
+            margin-bottom: 20px;
+        }
+        .car-card img {
+            width: 50%;
+            height: auto;
+        }
+        .car-details {
+            padding: 15px;
+            flex: 1;
+        }
+        .car-details h2 {
+            margin: 0;
+            font-size: 20px;
+            color: #333;
+        }
+        .car-details p {
+            margin: 5px 0;
+            color: #666;
+        }
+        .price {
+            font-size: 18px;
+            color: #ff6600;
+            font-weight: bold;
+        }
+        .buttons {
+            display: flex;
+            gap: 10px;
+            margin-top: 10px;
+        }
+        .button {
+            padding: 10px 15px;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            color: white;
+            font-size: 14px;
+        }
+        .call-button {
+            background-color: #ffa500;
+        }
+        .whatsapp-button {
+            background-color: #25d366;
+        }
+
+        /* New Styles for Added Sections */
+        .search-bar {
+            padding: 20px;
+            background-color: rgb(4, 4, 58);
+            text-align: center;
+        }
+        .search-bar input {
+            padding: 10px;
+            border: none;
+            border-radius: 5px;
+            width: 300px;
+        }
+        .search-bar button {
+            padding: 10px 15px;
+            background-color: #f5a623;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+        .sort-by {
+            padding: 10px;
+            background-color: rgb(4, 4, 58);
+            text-align: center;
+        }
+        .sort-by label {
+            color: white;
+            margin-right: 10px;
+        }
+        .sort-by select {
+            padding: 5px;
+            border-radius: 5px;
+        }
+        .featured-banner {
+            padding: 20px;
+            background-color: rgb(4, 4, 58);
+            text-align: center;
+        }
+        .featured-banner h2 {
+            color: white;
+        }
+        .featured-banner p {
+            color: #ddd;
+        }
+        .why-rent {
+            padding: 20px;
+            background-color: rgb(4, 4, 58);
+            text-align: center;
+        }
+        .why-rent h2 {
+            color: white;
+        }
+        .why-rent ul {
+            list-style: none;
+            padding: 0;
+            color: #ddd;
+        }
+        .why-rent ul li {
+            margin: 10px 0;
+        }
+        .customer-reviews {
+            padding: 20px;
+            background-color: rgb(4, 4, 58);
+            text-align: center;
+        }
+        .customer-reviews h2 {
+            color: white;
+        }
+        .review {
+            background-color: white;
+            border-radius: 10px;
+            padding: 15px;
+            margin: 10px auto;
+            max-width: 500px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        }
+        .review p {
+            color: #333;
+        }
+        .review strong {
+            color: #f5a623;
+        }
+        .cta-banner {
+            padding: 20px;
+            background-color: rgb(4, 4, 58);
+            text-align: center;
+        }
+        .cta-banner h2 {
+            color: white;
+        }
+        .cta-banner p {
+            color: #ddd;
+        }
+        .faq {
+            padding: 20px;
+            background-color: rgb(4, 4, 58);
+            text-align: center;
+        }
+        .faq h2 {
+            color: white;
+        }
+        .faq-item {
+            background-color: white;
+            border-radius: 10px;
+            padding: 15px;
+            margin: 10px auto;
+            max-width: 500px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        }
+        .faq-item h3 {
+            color: #f5a623;
+        }
+        .faq-item p {
+            color: #333;
+        }
+        .contact-us {
+            padding: 20px;
+            background-color: rgb(4, 4, 58);
+            text-align: center;
+        }
+        .contact-us h2 {
+            color: white;
+        }
+        .contact-us p {
+            color: white;
+        }
+        .contact-methods {
+            color: #ddd;
+        }
+        .social-media {
+            padding: 20px;
+            background-color: rgb(4, 4, 58);
+            text-align: center;
+        }
+        .social-media h2 {
+            color: white;
+        }
+        .social-links img {
+            width: 24px;
+            height: 24px;
+            margin: 0 10px;
+        }
+        footer {
+            padding: 20px;
+            background-color: #333;
+            color: white;
+            text-align: center;
+        }
+        .footer-links a {
+            color: #f5a623;
+            text-decoration: none;
+            margin: 0 10px;
+        }
+    </style>
+</head>
+<body>
+    <!-- Header Section -->
+    <header class="header">
+        <!-- Logo -->
+        <div class="logo">
+            <p> <strong>OneTapDrive</strong></p>
+        </div>
+
+        <!-- Navigation Menu -->
+        <nav class="navbar">
+            <ul>
+                <li><a href="final test.html">Home</a></li>
+                <li class="dropdown">
+                    <a href="#">Categories & Brands</a>
+                    <div class="dropdown-content">
+                        <h3>Car Categories</h3>
+                        <div class="categories">
+                            <a href="suv.html">SUV</a>
+                            <a href="sedan.html">Sedan</a>
+                            <a href="luxury.html">Luxury</a>
+                            <a href="crossover.html">Crossover</a>
+                            <a href="compact.html">Compact</a>
+                            <a href="convertible.html">Convertible</a>
+                            <a href="sport.html">Sport</a>
+                            <a href="electric.html">Electric</a>
+                        </div>
+                        <h3>Car Brands</h3>
+                        <div class="brands">
+                            <img src="https://example.com/toyota.png" alt="Toyota">
+                            <img src="https://example.com/bmw.png" alt="BMW">
+                            <img src="https://example.com/audi.png" alt="Audi">
+                            <img src="https://example.com/mercedes.png" alt="Mercedes">
+                            <img src="https://example.com/ford.png" alt="Ford">
+                            <img src="https://example.com/honda.png" alt="Honda">
+                        </div>
+                    </div>
+                </li>
+                <li><a href="driver.html">Services</a></li>
+                <li><a href="contact.html">Contact</a></li>
+            </ul>
+        </nav>
+    </header>
+
+    <!-- Search Bar -->
+    <div class="search-bar">
+        <input type="text" id="searchInput" placeholder="Search for compact models...">
+        <button class="button" onclick="searchCars()">Search</button>
+    </div>
+
+    <!-- Sort By Dropdown -->
+    <div class="sort-by">
+        <label for="sort">Sort By:</label>
+        <select id="sort" onchange="sortCars()">
+            <option value="default">Default</option>
+            <option value="price-low-to-high">Price: Low to High</option>
+            <option value="price-high-to-low">Price: High to Low</option>
+        </select>
+    </div>
+
+    <!-- Featured Compact Cars Banner -->
+    <div class="featured-banner">
+        <h2>Featured SUV Cars</h2>
+        <p>Check out our top picks for this month!</p>
+    </div>
+
+    <!-- Why Rent a Compact Car Section -->
+    <div class="why-rent">
+        <h2>Why Rent an SUV Car?</h2>
+        <ul>
+            <li>✅ Affordable and fuel-efficient.</li>
+            <li>✅ Perfect for driving.</li>
+            <li>✅ Comfortable and easy to handle.</li>
+            <li>✅ Great for long travels and many lugguage.</li>
+        </ul>
+    </div>
+
+    <div class="container">
+        <!-- Car 1 -->
+        <div class="car-card">
+            <img src="SUV cars/ce.1.jpeg" alt="Cadillac Escalade 2023">
+            <div class="car-details">
+                <h2>Cadillac Escalade 2023</h2>
+                <p>Experience Luxury and Power with the 2023 Cadillac Escalade
+                    Elevate your journey with the 2023 Cadillac Escalade, the ultimate luxury SUV. With its bold design, premium leather interior, advanced technology, and spacious seating for up to 8, it's perfect for family trips, business travel, or special occasions. Enjoy a smooth ride powered by a robust V8 engine and cutting-edge safety features. Whether you're cruising in style or tackling long drives, the Escalade ensures unmatched comfort and sophistication. Book now and make every moment unforgettable!
+                </p>
+                <p>SUV | 5 Seats | 1 Bag</p>
+                <p class="price">100Dt / Daily</p>
+                <div class="buttons">
+                    <button class="button call-button">Call</button>
+                    <button class="button whatsapp-button">WhatsApp</button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Car 2 -->
+        <div class="car-card">
+            <img src="SUV cars/ce.2.jpeg" alt="Toyota Highlander 2022">
+            <div class="car-details">
+                <h2>Toyota Highlander 2022</h2>
+                <p>Reliable Comfort with the 2022 Toyota Highlander
+                    The 2022 Toyota Highlander is the perfect blend of style, comfort, and versatility. With seating for up to 8, ample cargo space, and advanced safety features, it’s ideal for family vacations, group trips, or everyday adventures. Enjoy a smooth and fuel-efficient drive, paired with a modern interior and cutting-edge tech like Apple CarPlay and a touchscreen display. Whether it's a road trip or a city ride, the Highlander delivers reliability and comfort. Reserve your ride today!
+                </p>
+                <p>SUV | 5 Seats | 2 Bags</p>
+                <p class="price"> 100DT/ Daily</p>
+                <div class="buttons">
+                    <button class="button call-button">Call</button>
+                    <button class="button whatsapp-button">WhatsApp</button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Car 3 -->
+        <div class="car-card">
+            <img src="SUV cars/ce.3.jpeg" alt="Ford Explorer Sport Trac 2021">
+            <div class="car-details">
+                <h2>Ford Explorer Sport Trac 2021</h2>
+                <p>Adventure-Ready with the 2021 Ford Explorer Sport Trac
+                    Hit the road or trail with the 2021 Ford Explorer Sport Trac, a versatile SUV-truck hybrid built for action. With its powerful performance, roomy cabin, and practical truck bed, it’s perfect for outdoor adventures, road trips, or hauling gear. Enjoy modern features like advanced safety tech, a comfortable interior, and all-terrain capability to tackle any journey with confidence. Rent the Explorer Sport Trac today and experience the ultimate combination of utility and comfort!
+                </p>
+                <p>SUV | 5 Seats | 2 Bags</p>
+                <p class="price">100DT / Daily</p>
+                <div class="buttons">
+                    <button class="button call-button">Call</button>
+                    <button class="button whatsapp-button">WhatsApp</button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Car 4 -->
+        <div class="car-card">
+            <img src="SUV cars/ce.4.jpeg" alt="Chevrolet Captiva 2023">
+            <div class="car-details">
+                <h2>Chevrolet Captiva 2023</h2>
+                <p>Style and Comfort with the 2023 Chevrolet Captiva
+                    The 2023 Chevrolet Captiva is the perfect compact SUV for your next trip. With its sleek design, spacious interior, and advanced features, it offers comfort and convenience for families, couples, or solo travelers. Enjoy excellent fuel efficiency, modern tech like a touchscreen infotainment system, and a smooth driving experience. Whether you're exploring the city or venturing out of town, the Captiva is ready to make your journey unforgettable. Book now and drive in style!
+                </p>
+                <p>SUV | 5 Seats | 2 Bags</p>
+                <p class="price">100DT / Daily</p>
+                <div class="buttons">
+                    <button class="button call-button">Call</button>
+                    <button class="button whatsapp-button">WhatsApp</button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Car 5 -->
+        <div class="car-card">
+            <img src="SUV cars/ce.5.jpeg" alt="BMW X4 M 2022">
+            <div class="car-details">
+                <h2>BMW X4 M 2022</h2>
+                <p>
+                    Unleash Thrills with the 2022 BMW X4 M
+                    Elevate your driving experience with the 2022 BMW X4 M, a luxury SUV that combines breathtaking performance with striking design. Powered by a high-performance engine and equipped with M-tuned suspension, it delivers precision and excitement on every drive. The sleek coupe-like silhouette, premium interior, and cutting-edge technology make it perfect for those who crave style and speed. Whether for business or leisure, the X4 M guarantees a first-class journey. Rent it today and feel the exhilaration!
+                </p>
+                <p>SUV | 5 Seats | 2 Bags</p>
+                <p class="price">100DT / Daily</p>
+                <div class="buttons">
+                    <button class="button call-button">Call</button>
+                    <button class="button whatsapp-button">WhatsApp</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Customer Reviews Section -->
+    <div class="customer-reviews">
+        <h2>What Our Customers Say</h2>
+        <div class="review">
+            <p>"The Chevrolet Captiva was perfect for our city trip. Highly recommend!"</p>
+            <p><strong>- John Doe</strong></p>
+        </div>
+        <div class="review">
+            <p>"Excellent service and the BMW X4 was a joy to drive. Will rent again!"</p>
+            <p><strong>- Jane Smith</strong></p>
+        </div>
+    </div>
+
+    <!-- Call to Action Banner -->
+    <div class="cta-banner">
+        <h2>Ready to Rent Your Dream SUV Car?</h2>
+        <p>Book now and enjoy the best deals in Tunisia!</p>
+        <button class="button call-button">Call to Book</button>
+        <button class="button whatsapp-button">WhatsApp Us</button>
+    </div>
+
+    <!-- Frequently Asked Questions Section -->
+    <div class="faq">
+        <h2>Frequently Asked Questions</h2>
+        <div class="faq-item">
+            <h3>What documents do I need to rent an SUV car?</h3>
+            <p>You need a valid driver's license, ID, and a credit card for the security deposit.</p>
+        </div>
+        <div class="faq-item">
+            <h3>Can I rent SUV car for long trips?</h3>
+            <p>Yes, our compact cars are perfect for both city drives and long trips.</p>
+        </div>
+        <div class="faq-item">
+            <h3>Is insurance included in the rental price?</h3>
+            <p>Basic insurance is included, but you can upgrade to comprehensive coverage for added protection.</p>
+        </div>
+    </div>
+
+    <!-- Contact Us Section -->
+    <div class="contact-us">
+        <h2>Contact Us</h2>
+        <p>Have questions? Reach out to us anytime!</p>
+        <div class="contact-methods">
+            <p>📞 Call: +216 12 345 678</p>
+            <p>📧 Email: info@suvcarrental.com</p>
+            <p>📍 Address: Tunis, Tunisia</p>
+        </div>
+    </div>
+
+    <!-- Social Media Links -->
+    <div class="social-media">
+        <h2>Follow Us</h2>
+        <div class="social-links">
+            <a href="https://www.facebook.com/"><img src="Reseaux/facebook.png" alt="Facebook"></a>
+            <a href="https://x.com/"><img src="Reseaux/twitter.png" alt="Twitter"></a>
+            <a href="https://www.instagram.com/"><img src="Reseaux/instagram.jpg" alt="Instagram"></a>
+        </div>
+    </div>
+
+    <!-- Footer -->
+    <footer>
+        <p>© 2025 SUV Car Rental. All Rights Reserved.</p>
+        <div class="footer-links">
+            <a href="#">Privacy Policy</a> |
+            <a href="#">Terms of Service</a> |
+            <a href="contact.html">Contact Us</a>
+        </div>
+    </footer>
+
+    <script>
+        // Close dropdowns when clicking outside
+        window.onclick = function (event) {
+            if (!event.target.matches('.dropdown a')) {
+                const dropdowns = document.querySelectorAll('.dropdown-content');
+                dropdowns.forEach(dropdown => {
+                    dropdown.style.display = 'none';
+                });
+            }
+        };
+        // JavaScript to toggle the hidden cards
+        const toggleBtn = document.getElementById('toggle-btn');
+        const hiddenCards = document.querySelectorAll('.hidden');
+
+        toggleBtn.addEventListener('click', () => {
+            hiddenCards.forEach(card => {
+                card.classList.toggle('hidden');
+            });
+
+            // Change the text of the button
+            if (toggleBtn.textContent === 'Show More') {
+                toggleBtn.textContent = 'Show Less';
+            } else {
+                toggleBtn.textContent = 'Show More';
+            }
+        });
+
+        // Modal functionality
+        var modal1 = document.getElementById("bookingModal1");
+        var btn = document.getElementById("myBtn");
+        var span = document.getElementsByClassName("close")[0];
+
+        // When the user clicks the button, open the modal
+        btn.onclick = function () {
+            modal1.style.display = "block";
+        }
+
+        // When the user clicks on <span> (x), close the modal
+        span.onclick = function () {
+            modal1.style.display = "none";
+        }
+
+        // When the user clicks anywhere outside of the modal, close it
+        window.onclick = function (event) {
+            if (event.target == modal1) {
+                modal.style.display = "none";
+            }
+        }
+
+        // Handle form submission
+        document.getElementById("bookingForm").addEventListener("submit", function (event) {
+            event.preventDefault();
+            alert("Booking information submitted successfully!");
+            modal1.style.display = "none"; // Close the modal after submission
+        });
+
+        // Search functionality
+        function searchCars() {
+            const searchTerm = document.getElementById('searchInput').value.toLowerCase();
+            const carNames = document.querySelectorAll('.car-details h2');
+            carNames.forEach(car => {
+                if (car.textContent.toLowerCase().includes(searchTerm)) {
+                    car.parentElement.parentElement.style.display = 'flex'; // Show matching cars
+                } else {
+                    car.parentElement.parentElement.style.display = 'none'; // Hide non-matching cars
+                }
+            });
+        }
+
+        // Sort functionality
+        function sortCars() {
+            const sortValue = document.getElementById('sort').value;
+            const container = document.querySelector('.container');
+            const carCards = Array.from(document.querySelectorAll('.car-card'));
+
+            if (sortValue === 'price-low-to-high') {
+                carCards.sort((a, b) => {
+                    const priceA = parseInt(a.querySelector('.price').textContent.replace(/\D/g, ''));
+                    const priceB = parseInt(b.querySelector('.price').textContent.replace(/\D/g, ''));
+                    return priceA - priceB;
+                });
+            } else if (sortValue === 'price-high-to-low') {
+                carCards.sort((a, b) => {
+                    const priceA = parseInt(a.querySelector('.price').textContent.replace(/\D/g, ''));
+                    const priceB = parseInt(b.querySelector('.price').textContent.replace(/\D/g, ''));
+                    return priceB - priceA;
+                });
+            } else {
+                carCards.sort((a, b) => {
+                    return 0; // Default order
+                });
+            }
+
+            // Clear the container and append sorted cars
+            container.innerHTML = '';
+            carCards.forEach(car => container.appendChild(car));
+        }
+    </script>
+</body>
+</html>

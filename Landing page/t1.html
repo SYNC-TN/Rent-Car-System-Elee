@@ -1,0 +1,1141 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>OneTapDrive</title>
+    <style>
+        /* General Styles */
+        body {
+            margin: 0;
+            font-family: Arial, sans-serif;
+        }
+
+        /* Header */
+        .header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 10px 50px;
+            background-color: rgba(0, 0, 0, 0.9); /* Semi-transparent black background */
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2); /* Subtle shadow for depth */
+        }
+
+        /* Logo */
+        .logo p {
+            color: white;
+        }
+
+        /* Navigation Menu */
+        .navbar ul {
+            list-style: none;
+            display: flex;
+            gap: 30px; /* Space between menu items */
+            align-items: center;
+        }
+
+        .navbar ul li a {
+            text-decoration: none;
+            color: #fff;
+            font-size: 1rem;
+            font-weight: 500;
+            transition: color 0.3s, transform 0.3s;
+        }
+
+        .navbar ul li a:hover {
+            color: #f5a623; /* Highlight color on hover */
+            transform: translateY(-2px); /* Slight lift effect */
+        }
+
+        /* Dropdown Menu */
+        .dropdown {
+            position: relative;
+            display: inline-block;
+        }
+
+        .dropdown-content {
+            display: none;
+            position: absolute;
+            background-color: #fff;
+            min-width: 300px;
+            box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
+            border-radius: 5px;
+            padding: 20px;
+            z-index: 1001;
+            top: 30px;
+            left: 0;
+        }
+
+        .dropdown-content h3 {
+            color: #333;
+            font-size: 1.2rem;
+            margin-bottom: 10px;
+        }
+
+        .dropdown-content .categories,
+        .dropdown-content .brands {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+        }
+
+        .dropdown-content .categories a,
+        .dropdown-content .brands img {
+            background-color: #f5a623;
+            color: #fff;
+            padding: 5px 10px;
+            border-radius: 5px;
+            text-decoration: none;
+            font-size: 0.9rem;
+            transition: background-color 0.3s;
+        }
+
+        .dropdown-content .categories a:hover {
+            background-color: #e5941f;
+        }
+
+        .dropdown-content .brands img {
+            width: 50px;
+            height: auto;
+            border-radius: 5px;
+        }
+
+        .dropdown:hover .dropdown-content {
+            display: block;
+        }
+
+        /* Search Bar */
+        .search-bar {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .search-bar input {
+            padding: 10px;
+            border: none;
+            border-radius: 5px;
+            width: 200px;
+        }
+
+        .search-bar button {
+            background-color: #f5a623;
+            color: #fff;
+            padding: 10px 15px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: background-color 0.3s;
+        }
+
+        .search-bar button:hover {
+            background-color: #e5941f;
+        }
+
+        /* Call-to-Action Button */
+        .cta .btn {
+            background-color: #f5a623;
+            color: #fff;
+            padding: 10px 20px;
+            border-radius: 5px;
+            text-decoration: none;
+            font-weight: bold;
+            transition: background-color 0.3s, transform 0.3s;
+        }
+
+        .cta .btn:hover {
+            background-color: #e5941f;
+            transform: scale(1.05);
+        }
+
+        /* Responsive Design */
+        @media (max-width: 768px) {
+            .header {
+                flex-direction: column;
+                padding: 15px;
+            }
+
+            .navbar ul {
+                flex-direction: column;
+                gap: 15px;
+                text-align: center;
+            }
+
+            .search-bar {
+                margin-top: 15px;
+            }
+
+            .cta {
+                margin-top: 15px;
+            }
+        }
+
+        /* Hero Section Styles */
+        .hero {
+            text-align: center;
+            padding: 50px 20px;
+            background: url(https://d2m3nfprmhqjvd.cloudfront.net/blog/20220228142243/ezgif.com-gif-maker-98-5.jpg) no-repeat center center/cover;
+        }
+
+        .hero-content h2 {
+            color: #f5a623;
+            margin: 0;
+            font-size: 24px;
+            height: 100vh;
+            width: 100%;
+        }
+
+        .hero-content h1 {
+            margin: 10px 0;
+            font-size: 36px;
+            color: white;
+        }
+
+        .hero-content p {
+            margin: 10px 0 20px;
+            color: white;
+        }
+
+        .hero-content .btn {
+            background-color: #f5a623;
+            color: #fff;
+            text-decoration: none;
+            padding: 10px 20px;
+            border-radius: 5px;
+            font-weight: bold;
+        }
+
+        .button {
+            display: inline-block;
+            padding: 10px 20px;
+            font-size: 16px;
+            color: white;
+            background-color: orange;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+
+        .button:hover {
+            background-color: darkorange;
+        }
+
+        /* Modal styling */
+        .modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.5);
+            justify-content: center;
+            align-items: center;
+        }
+
+        .modal-content {
+            background-color: white;
+            padding: 20px;
+            border-radius: 10px;
+            width: 90%;
+            max-width: 400px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+        }
+
+        .modal-header {
+            font-size: 20px;
+            margin-bottom: 20px;
+        }
+
+        .modal-footer {
+            margin-top: 20px;
+            text-align: right;
+        }
+
+        .form-group {
+            margin-bottom: 15px;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 5px;
+        }
+
+        .form-group input {
+            width: 100%;
+            padding: 8px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+        }
+
+        .close {
+            float: right;
+            font-size: 20px;
+            font-weight: bold;
+            cursor: pointer;
+        }
+
+        .close:hover {
+            color: red;
+        }
+
+        .car-images {
+            display: flex;
+            justify-content: center;
+            gap: 20px;
+            margin-top: 30px;
+        }
+
+        .car-images img {
+            width: 150px;
+            border-radius: 10px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        }
+
+        /* Rental Section Styles */
+        .rental-section {
+            font-family: Arial, sans-serif;
+            color: #fff;
+            background-color: rgb(4, 4, 58);
+            padding: 50px 20px;
+            text-align: center;
+        }
+
+        .rental-banner h1 {
+            font-size: 2.5em;
+            margin-bottom: 10px;
+        }
+
+        .rental-banner p {
+            font-size: 1.1em;
+            line-height: 1.6;
+        }
+
+        .rent-top-brands {
+            margin-top: 30px;
+        }
+
+        .rent-top-brands h2 {
+            font-size: 1.8em;
+            color: #ffa500;
+        }
+
+        .rent-top-brands p {
+            font-size: 1em;
+            color: #ddd;
+        }
+
+        strong {
+            color: #ffa500;
+        }
+
+        em {
+            font-style: italic;
+            color: #ffa500;
+        }
+
+        /* Categories Section Styles */
+        .categories {
+            padding: 50px 20px;
+            background-color: rgb(4, 4, 58);
+            text-align: center;
+        }
+
+        .categories h2 {
+            margin-bottom: 20px;
+            font-size: 28px;
+            color: white;
+        }
+
+        .category-grid {
+            display: flex;
+            justify-content: center;
+            flex-wrap: wrap;
+            gap: 20px;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .category-card {
+            background-color: #fff;
+            border: 1px solid #ddd;
+            border-radius: 10px;
+            padding: 20px;
+            text-align: center;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            transition: transform 0.3s, box-shadow 0.3s;
+            width: 200px;
+        }
+
+        .category-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 6px 10px rgba(0, 0, 0, 0.15);
+        }
+
+        .category-card img {
+            width: 100px;
+            height: 70px;
+            margin-bottom: 10px;
+        }
+
+        .category-card h3 {
+            margin: 10px 0;
+            font-size: 18px;
+            color: #333;
+        }
+
+        .category-card p {
+            color: #777;
+            font-size: 14px;
+            margin: 0;
+        }
+
+        /* Show More Button Styles */
+        .show-more-btn {
+            margin-top: 20px;
+            padding: 10px 20px;
+            background-color: #f5a623;
+            color: #fff;
+            text-decoration: none;
+            font-size: 16px;
+            font-weight: bold;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: background-color 0.3s;
+        }
+
+        .show-more-btn:hover {
+            background-color: #e5941f;
+        }
+
+        /* Hidden cards */
+        .hidden {
+            display: none;
+        }
+
+        /* Documents Section Styles */
+        .documents-section {
+            padding: 50px 20px;
+            text-align: center;
+            background-color: rgb(4, 4, 58);
+        }
+
+        .documents-section h1 {
+            color: #ffa500;
+            font-size: 28px;
+            margin-bottom: 20px;
+        }
+
+        .documents-section .intro-text,
+        .documents-section .note {
+            font-size: 16px;
+            line-height: 1.6;
+            margin-bottom: 20px;
+            color: white;
+        }
+
+        .documents-container {
+            display: flex;
+            justify-content: center;
+            gap: 20px;
+            margin-top: 30px;
+        }
+
+        .document-box {
+            background-color: white;
+            border: 1px solid #444;
+            border-radius: 10px;
+            padding: 20px;
+            width: 300px;
+            text-align: left;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.3);
+        }
+
+        .document-box h2 {
+            color: #ffa500;
+            font-size: 20px;
+            margin-bottom: 10px;
+        }
+
+        .document-box ul {
+            list-style-type: none;
+            padding: 0;
+        }
+
+        .document-box ul li {
+            margin: 5px 0;
+            font-size: 16px;
+            line-height: 1.4;
+        }
+
+        /* Modal Styles */
+        .modal {
+            display: none;
+            position: fixed;
+            z-index: 1;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            overflow: auto;
+            background-color: rgba(0, 0, 0, 0.4);
+            padding-top: 60px;
+        }
+
+        .modal-content {
+            background-color: #fefefe;
+            margin: 5% auto;
+            padding: 20px;
+            border: 1px solid #888;
+            width: 80%;
+            border-radius: 10px;
+        }
+
+        .close {
+            color: #aaa;
+            float: right;
+            font-size: 28px;
+            font-weight: bold;
+        }
+
+        .close:hover,
+        .close:focus {
+            color: black;
+            text-decoration: none;
+            cursor: pointer;
+        }
+
+        .modal form {
+            display: flex;
+            flex-direction: column;
+        }
+
+        .modal form label {
+            margin-bottom: 5px;
+        }
+
+        .modal form input,
+        .modal form textarea,
+        .modal form select {
+            margin-bottom: 20px;
+            padding: 10px;
+            border: 1px solid #aaa;
+            border-radius: 5px;
+        }
+
+        .modal form button {
+            background-color: #f5a623;
+            color: white;
+            padding: 10px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+
+        .modal form button:hover {
+            background-color: #e5941f;
+        }
+
+        /* New Styles for Added Sections */
+        .search-section {
+            padding: 20px;
+            background-color: rgb(4, 4, 58);
+            text-align: center;
+        }
+
+        .search-container {
+            display: flex;
+            justify-content: center;
+            gap: 10px;
+        }
+
+        .search-container input {
+            padding: 10px;
+            border: none;
+            border-radius: 5px;
+            width: 300px;
+        }
+
+        .testimonials-section {
+            padding: 50px 20px;
+            background-color: rgb(4, 4, 58);
+            text-align: center;
+        }
+        .testimonials-section h2{
+            color: white;
+        }
+
+        .testimonials-container {
+            display: flex;
+            justify-content: center;
+            gap: 20px;
+            margin-top: 20px;
+        }
+
+        .testimonial-card {
+            background-color: white;
+            border-radius: 10px;
+            padding: 20px;
+            width: 300px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        }
+
+        .testimonial-card p {
+            color: #333;
+            font-size: 16px;
+            line-height: 1.6;
+        }
+
+        .testimonial-card strong {
+            color: #f5a623;
+        }
+
+        .why-choose-us {
+            padding: 50px 20px;
+            background-color: rgb(4, 4, 58);
+            text-align: center;
+        }
+        .why-choose-us h2 {
+            color: white;
+        }
+
+        .features-container {
+            display: flex;
+            justify-content: center;
+            gap: 20px;
+            margin-top: 20px;
+        }
+
+        .feature-card {
+            background-color: white;
+            border-radius: 10px;
+            padding: 20px;
+            width: 300px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        }
+
+        .feature-card h3 {
+            color: #f5a623;
+            font-size: 20px;
+        }
+
+        .feature-card p {
+            color: #333;
+            font-size: 16px;
+        }
+
+        .popular-destinations {
+            padding: 50px 20px;
+            background-color: rgb(4, 4, 58);
+            text-align: center;
+        }
+        .popular-destinations h2 {
+            color: white;
+        }
+
+        .destinations-container {
+            display: flex;
+            justify-content: center;
+            gap: 20px;
+            margin-top: 20px;
+        }
+
+        .destination-card {
+            background-color: white;
+            border-radius: 10px;
+            padding: 10px;
+            width: 200px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        }
+
+        .destination-card img {
+            width: 100%;
+            border-radius: 10px;
+        }
+
+        .destination-card h3 {
+            color: #f5a623;
+            font-size: 18px;
+        }
+
+        .newsletter-section {
+            padding: 50px 20px;
+            background-color: rgb(4, 4, 58);
+            color: white;
+            text-align: center;
+        }
+
+        .newsletter-section form {
+            margin-top: 20px;
+        }
+
+        .newsletter-section input {
+            padding: 10px;
+            border: none;
+            border-radius: 5px;
+            width: 300px;
+        }
+
+        .newsletter-section button {
+            margin-left: 10px;
+        }
+
+        .top-deals {
+            padding: 50px 20px;
+            background-color: rgb(4, 4, 58);
+            text-align: center;
+        }
+        .top-deals h2 {
+            color: white;
+        }
+
+        .deals-container {
+            display: flex;
+            justify-content: center;
+            gap: 20px;
+            margin-top: 20px;
+        }
+
+        .deal-card {
+            background-color: white;
+            border-radius: 10px;
+            padding: 10px;
+            width: 200px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        }
+
+        .deal-card img {
+            width: 100%;
+            border-radius: 10px;
+        }
+
+        .deal-card h3 {
+            color: #f5a623;
+            font-size: 18px;
+        }
+
+        .deal-card p {
+            color: #333;
+            font-size: 16px;
+        }
+
+        .social-media img {
+            width: 24px;
+            height: 24px;
+        }
+    </style>
+</head>
+
+<body>
+    <!-- Header Section -->
+    <header class="header">
+        <!-- Logo -->
+        <div class="logo">
+            <p> <strong>OneTapDrive</strong></p>
+        </div>
+
+        <!-- Navigation Menu -->
+        <nav class="navbar">
+            <ul>
+                <li><a href="final test.html">Home</a></li>
+                <li class="dropdown">
+                    <a href="#">Categories & Brands</a>
+                    <div class="dropdown-content">
+                        <h3>Car Categories</h3>
+                        <div class="categories">
+                            <a href="suv.html">SUV</a>
+                            <a href="sedan.html">Sedan</a>
+                            <a href="luxury.html">Luxury</a>
+                            <a href="crossover.html">Crossover</a>
+                            <a href="compact.html">Compact</a>
+                            <a href="convertible.html">Convertible</a>
+                            <a href="sport.html">Sport</a>
+                            <a href="electric.html">Electric</a>
+                            <a href="seater.html">7Seater </a>
+                        </div>
+                        <h3>Car Brands</h3>
+                        <div class="brands">
+                            <img src="" alt="Toyota">
+                            <img src="" alt="BMW">
+                            <img src="" alt="Audi">
+                            <img src="" alt="Mercedes">
+                            <img src="" alt="Ford">
+                            <img src="" alt="Honda">
+                        </div>
+                    </div>
+                </li>
+                <li><a href="driver.html">Services</a></li>
+                <li><a href="contact.html">Contact</a></li>
+            </ul>
+        </nav>
+          <!-- Search Bar -->
+        <div class="search-bar">
+            <input type="text" placeholder="Search for cars...">
+            <button>Search</button>
+        </div>
+    </header>
+
+    <!-- Hero Section -->
+    <section class="hero">
+        <span></span>
+        <div class="hero-content">
+            <h2>Tunisia's Fastest Growing</h2>
+            <h1>Rent a Car Marketplace</h1>
+            <p>Discover unforgettable traveling and rent a car for an unmatched experience.</p>
+            <a class="btn" id="myBtn">Book Now</a>
+        </div>
+    </section>
+
+    <!-- Search Section -->
+    <section class="search-section">
+        <div class="search-container">
+            <input type="text" id="searchInput" placeholder="Search for cars (e.g., SUV, Luxury, Sedan)">
+            <button class="button" onclick="searchCars()">Search</button>
+        </div>
+    </section>
+
+    <!-- Modal for Booking -->
+    <div class="modal" id="bookingModal1">
+        <div class="modal-content">
+            <span class="close" id="closeModal">&times;</span>
+            <div class="modal-header">Car Booking Form</div>
+            <form id="bookingForm">
+                <div class="form-group">
+                    <label for="name">Name:</label>
+                    <input type="text" id="name" name="name" required>
+                </div>
+                <div class="form-group">
+                    <label for="phone">Phone Number:</label>
+                    <input type="tel" id="phone" name="phone" required>
+                </div>
+                <div class="form-group">
+                    <label for="rentDate">Rent Date:</label>
+                    <input type="date" id="rentDate" name="rentDate" required>
+                </div>
+                <div class="form-group">
+                    <label for="returnDate">Return Date:</label>
+                    <input type="date" id="returnDate" name="returnDate" required>
+                </div>
+                <div class="modal-footer">
+                    <button type="submit" class="button">Submit</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- Categories Section -->
+    <section class="categories">
+        <h2>Choose By Categories</h2>
+        <div class="category-grid">
+            <a href="suv.html">
+                <div class="category-card">
+                    <img src="P1/SUV LUXRY.webp" alt="SUV">
+                    <h3>SUV</h3>
+                    <p>5 Cars</p>
+                </div>
+            </a>
+            <a href="sedan.html">
+                <div class="category-card">
+                    <img src="P1/SEDAN.webp" alt="Sedan">
+                    <h3>Sedan</h3>
+                    <p>5 Cars</p>
+                </div>
+            </a>
+            <a href="luxury.html">
+                <div class="category-card">
+                    <img src="P1/LUXURY.jpg" alt="Luxury Car">
+                    <h3>Luxury Car</h3>
+                    <p>5 Cars</p>
+                </div>
+            </a>
+            <a href="crossover.html">
+                <div class="category-card">
+                    <img src="P1/CROSSOVER.jpg" alt="Crossover">
+                    <h3>Crossover</h3>
+                    <p>5 Cars</p>
+                </div>
+            </a>
+            <br>
+            <a href="seater.html">
+                <div class="category-card">
+                    <img src="P1/SEATER.jpg" alt="7 Seater">
+                    <h3>7 Seater</h3>
+                    <p>5 Cars</p>
+                </div>
+            </a>
+            <a href="convertible.html">
+                <div class="category-card">
+                    <img src="P1/CONVERTIBLE.jpg" alt="Convertible">
+                    <h3>Convertible</h3>
+                    <p>5 Cars</p>
+                </div>
+            </a>
+            <a href="compact.html">
+                <div class="category-card">
+                    <img src="P1/COMPACT.jpg" alt="Compact">
+                    <h3>Compact</h3>
+                    <p>5 Cars</p>
+                </div>
+            </a>
+            <a href="driver.html" id="car-with-driver">
+                <div class="category-card">
+                    <img src="P1/DRIVER.jpg" alt="Car With Driver">
+                    <h3>Car With Driver</h3>
+                    <p>5 Cars</p>
+                </div>
+            </a>
+            <br>
+            <a href="electric.html" class="hidden" id="electric-cars">
+                <div class="category-card">
+                    <img src="P1/ELEC.jpg" alt="Electric Cars">
+                    <h3>Electric Cars</h3>
+                    <p>5 Cars</p>
+                </div>
+            </a>
+            <a href="sport.html" class="hidden" id="Sport-car">
+                <div class="category-card">
+                    <img src="P1/SPORT.jpg" alt="Sport car">
+                    <h3>Sport Car</h3>
+                    <p>5 Cars</p>
+                </div>
+            </a>
+        </div>
+        <button class="show-more-btn" id="toggle-btn">Show More</button>
+    </section>
+
+    <!-- Rental Section -->
+    <section class="rental-section">
+        <div class="rental-banner">
+            <h1>Smart And Affordable Ways To Rent A Car In Tunisia</h1>
+            <p>
+                Still stuck searching for a <em>‘rent a car near me’?</em> Your perfect match is right here!
+                <strong>OneTapDrive.com</strong> is one of Tunisia's emerging car rental marketplaces, catering to
+                budget-friendly car rental deals from the best rental companies.
+                You can access our extensive fleet of over 2,000 vehicles from trusted rental companies across Tunisia.
+                We are confident that you will find the most affordable options, whether you are a tourist in need of a
+                car or a resident looking for long-term rentals, starting from <strong>100Dt per day</strong>.
+            </p>
+        </div>
+        <div class="rent-top-brands">
+            <h2>Rent A Car From Top Brands</h2>
+            <p>
+                Take your road trip to the next level with <strong>cheap car rental Tunisia</strong> options and enjoy
+                premium cars from leading automakers.
+            </p>
+        </div>
+    </section>
+
+    <!-- Documents Section -->
+    <section class="documents-section">
+        <h1>Required Documents For Car Rental Tunisia</h1>
+        <p class="intro-text">
+            One particular thing about Tunisia is that you will find yourself visiting all the major attractions in the
+            country.
+            Located in the region, the best way to navigate is by car. You can rent a vehicle across Tunisia if you have
+            the valid documents mentioned below.
+        </p>
+        <p class="note">
+            Hence, to enjoy our rental car services in Tunisia, ensure you have a valid Tunisian driving license to rent
+            both luxury and economy cars in Tunisia.
+        </p>
+        <div class="documents-container">
+            <div class="document-box">
+                <h2>For Tunisian Residents</h2>
+                <ul>
+                    <li>Driving License</li>
+                    <li>Tunisian ID</li>
+                    <li>(Residential Visa may be acceptable)</li>
+                </ul>
+            </div>
+            <div class="document-box">
+                <h2>For Tourists Visiting Tunisia</h2>
+                <ul>
+                    <li>Passport</li>
+                    <li>Visit Visa</li>
+                    <li>Home Country Driving License</li>
+                    <li>International Driving Permit (IDP)</li>
+                </ul>
+            </div>
+        </div>
+    </section>
+
+    <!-- Testimonials Section -->
+    <section class="testimonials-section">
+        <h2>What Our Customers Say</h2>
+        <div class="testimonials-container">
+            <div class="testimonial-card">
+                <p>"Amazing service! Renting a car was so easy and affordable. Highly recommend OneTapDrive!"</p>
+                <p><strong>- John Doe</strong></p>
+            </div>
+            <div class="testimonial-card">
+                <p>"The best car rental experience in Tunisia. Great cars and excellent customer support."</p>
+                <p><strong>- Jane Smith</strong></p>
+            </div>
+        </div>
+    </section>
+
+    <!-- Why Choose Us Section -->
+    <section class="why-choose-us">
+        <h2>Why Choose OneTapDrive?</h2>
+        <div class="features-container">
+            <div class="feature-card">
+                <h3>Wide Range of Cars</h3>
+                <p>Choose from over 2,000 vehicles across Tunisia.</p>
+            </div>
+            <div class="feature-card">
+                <h3>Affordable Prices</h3>
+                <p>Starting from just 100Dt per day.</p>
+            </div>
+            <div class="feature-card">
+                <h3>24/7 Support</h3>
+                <p>We're here to help you anytime, anywhere.</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- Popular Destinations Section -->
+    <section class="popular-destinations">
+        <h2>Popular Destinations in Tunisia</h2>
+        <div class="destinations-container">
+            <div class="destination-card">
+                <img src="Destination/tunis.jpg" alt="Tunis">
+                <h3>Tunis</h3>
+            </div>
+            <div class="destination-card">
+                <img src="Destination/sousse.jpg" alt="Sousse">
+                <h3>Sousse</h3>
+            </div>
+            <div class="destination-card">
+                <img src="Destination/hammamet.jpg" alt="Hammamet">
+                <h3>Hammamet</h3>
+            </div>
+        </div>
+    </section>
+
+    <!-- Newsletter Section -->
+    <section class="newsletter-section">
+        <h2>Subscribe to Our Newsletter</h2>
+        <p>Get the latest deals and updates delivered to your inbox.</p>
+        <form id="newsletterForm">
+            <input type="email" id="email" placeholder="Enter your email" required>
+            <button type="submit" class="button">Subscribe</button>
+        </form>
+    </section>
+
+    <!-- Top Deals Section -->
+    <section class="top-deals">
+        <h2>Top Deals</h2>
+        <div class="deals-container">
+            <div class="deal-card">
+                <img src="P1/SUV.jpg" alt="Deal 1">
+                <h3>SUV Rental - 20% Off</h3>
+                <p>Only 80Dt per day!</p>
+            </div>
+            <div class="deal-card">
+                <img src="P1/LUXURY.jpg" alt="Deal 2">
+                <h3>Luxury Car - 15% Off</h3>
+                <p>Only 150Dt per day!</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer style="background-color: #333; color: #fff; text-align: center; padding: 20px 10px; margin-top: 0px;">
+        <p>© 2025 OneTapDrive. All Rights Reserved.</p>
+        <div style="margin-top: 10px;">
+            <a href="#" style="margin: 0 10px; color: #f5a623; text-decoration: none;">Privacy Policy</a> |
+            <a href="#" style="margin: 0 10px; color: #f5a623; text-decoration: none;">Terms of Service</a> |
+            <a href="contact.html" style="margin: 0 10px; color: #f5a623; text-decoration: none;">Contact Us</a>
+        </div>
+        <div class="social-media">
+            <a href="https://www.facebook.com/" style="margin: 0 10px; color: #f5a623; text-decoration: none "><img src="Reseaux/facebook.png" alt="Facebook"></a>
+            <a href="https://x.com/" style="margin: 0 10px; color: #f5a623; text-decoration: none"><img src="Reseaux/twitter.png" alt="Twitter"></a>
+            <a href="https://www.instagram.com/" style="margin: 0 10px; color: #f5a623; text-decoration: none"><img src="Reseaux/instagram.jpg" alt="Instagram"></a>
+        </div>
+    </footer>
+
+    <script>
+         // Close dropdowns when clicking outside
+         window.onclick = function (event) {
+            if (!event.target.matches('.dropdown a')) {
+                const dropdowns = document.querySelectorAll('.dropdown-content');
+                dropdowns.forEach(dropdown => {
+                    dropdown.style.display = 'none';
+                });
+            }
+        };
+        // JavaScript to toggle the hidden cards
+        const toggleBtn = document.getElementById('toggle-btn');
+        const hiddenCards = document.querySelectorAll('.hidden');
+
+        toggleBtn.addEventListener('click', () => {
+            hiddenCards.forEach(card => {
+                card.classList.toggle('hidden');
+            });
+
+            // Change the text of the button
+            if (toggleBtn.textContent === 'Show More') {
+                toggleBtn.textContent = 'Show Less';
+            } else {
+                toggleBtn.textContent = 'Show More';
+            }
+        });
+
+        // Modal functionality
+        var modal1 = document.getElementById("bookingModal1");
+        var btn = document.getElementById("myBtn");
+        var span = document.getElementsByClassName("close")[0];
+
+        // When the user clicks the button, open the modal
+        btn.onclick = function () {
+            modal1.style.display = "block";
+        }
+
+        // When the user clicks on <span> (x), close the modal
+        span.onclick = function () {
+            modal1.style.display = "none";
+        }
+
+        // When the user clicks anywhere outside of the modal, close it
+        window.onclick = function (event) {
+            if (event.target == modal1) {
+                modal.style.display = "none";
+            }
+        }
+
+        // Handle form submission
+        document.getElementById("bookingForm").addEventListener("submit", function (event) {
+            event.preventDefault();
+            alert("Booking information submitted successfully!");
+            modal1.style.display = "none"; // Close the modal after submission
+        });
+
+        // Search functionality
+        function searchCars() {
+            const searchTerm = document.getElementById('searchInput').value.toLowerCase();
+            const categories = document.querySelectorAll('.category-card h3');
+            categories.forEach(category => {
+                if (category.textContent.toLowerCase().includes(searchTerm)) {
+                    category.parentElement.parentElement.style.display = 'block';
+                } else {
+                    category.parentElement.parentElement.style.display = 'none';
+                }
+            });
+        }
+
+        // Newsletter subscription
+        document.getElementById('newsletterForm').addEventListener('submit', function (event) {
+            event.preventDefault();
+            const email = document.getElementById('email').value;
+            alert(`Thank you for subscribing, ${email}!`);
+        });
+        
+    </script>
+</body>
+
+</html> 

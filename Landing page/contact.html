@@ -1,0 +1,566 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Car Rentals</title>
+    <style>
+        /* General Styles */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: Arial, sans-serif;
+            background: url(https://i.pinimg.com/736x/2a/44/36/2a4436d518018926dd7f9ab1db9d61fa.jpg) no-repeat center center fixed;
+            background-size: cover;
+            color: #fff;
+            line-height: 1.6;
+        }
+        /* Header */
+        .header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 10px 50px;
+            background-color: rgba(0, 0, 0, 0.9); /* Semi-transparent black background */
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2); /* Subtle shadow for depth */
+        }
+
+        /* Logo */
+        .logo p {
+            color: white;
+        }
+
+        /* Navigation Menu */
+        .navbar ul {
+            list-style: none;
+            display: flex;
+            gap: 30px; /* Space between menu items */
+            align-items: center;
+        }
+
+        .navbar ul li a {
+            text-decoration: none;
+            color: #fff;
+            font-size: 1rem;
+            font-weight: 500;
+            transition: color 0.3s, transform 0.3s;
+        }
+
+        .navbar ul li a:hover {
+            color: #f5a623; /* Highlight color on hover */
+            transform: translateY(-2px); /* Slight lift effect */
+        }
+
+        /* Dropdown Menu */
+        .dropdown {
+            position: relative;
+            display: inline-block;
+        }
+
+        .dropdown-content {
+            display: none;
+            position: absolute;
+            background-color: #fff;
+            min-width: 300px;
+            box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
+            border-radius: 5px;
+            padding: 20px;
+            z-index: 1001;
+            top: 30px;
+            left: 0;
+        }
+
+        .dropdown-content h3 {
+            color: #333;
+            font-size: 1.2rem;
+            margin-bottom: 10px;
+        }
+
+        .dropdown-content .categories,
+        .dropdown-content .brands {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+        }
+
+        .dropdown-content .categories a,
+        .dropdown-content .brands img {
+            background-color: #f5a623;
+            color: #fff;
+            padding: 5px 10px;
+            border-radius: 5px;
+            text-decoration: none;
+            font-size: 0.9rem;
+            transition: background-color 0.3s;
+        }
+
+        .dropdown-content .categories a:hover {
+            background-color: #e5941f;
+        }
+
+        .dropdown-content .brands img {
+            width: 50px;
+            height: auto;
+            border-radius: 5px;
+        }
+
+        .dropdown:hover .dropdown-content {
+            display: block;
+        }
+
+        /* Hero Section */
+        .hero {
+            position: relative;
+            height: 100vh;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            text-align: center;
+            color: #fff;
+            padding: 100px 20px 20px; /* Added top padding to push the header down */
+            overflow: hidden;
+        }
+
+        .hero::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.5);
+            z-index: -1;
+        }
+
+        .hero h1 {
+            font-size: 4rem;
+            margin-bottom: 20px;
+            color: #f5a623;
+            animation: fadeInDown 1.5s ease-in-out;
+        }
+
+        .hero p {
+            font-size: 1.5rem;
+            margin-bottom: 30px;
+            color: #ddd;
+            animation: fadeInUp 1.5s ease-in-out;
+        }
+
+        .hero button {
+            background-color: #f5a623;
+            color: #333;
+            border: none;
+            padding: 15px 30px;
+            font-size: 1.2rem;
+            cursor: pointer;
+            border-radius: 5px;
+            transition: background 0.3s, transform 0.3s;
+            animation: fadeIn 2s ease-in-out;
+        }
+
+        .hero button:hover {
+            background-color: #e5941f;
+            transform: scale(1.05);
+        }
+
+        /* Form Container */
+        .form-container {
+            background-color: rgba(0, 0, 0, 0.8);
+            padding: 30px;
+            border-radius: 15px;
+            margin-top: 20px;
+            width: 90%;
+            max-width: 450px;
+            text-align: left;
+            animation: slideInUp 1.5s ease-in-out;
+        }
+
+        .form-container h2 {
+            margin-bottom: 20px;
+            color: #f5a623;
+            font-size: 2rem;
+        }
+
+        .form-container form {
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+        }
+
+        .form-container input,
+        .form-container select,
+        .form-container button {
+            padding: 12px;
+            font-size: 1rem;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            background-color: rgba(255, 255, 255, 0.1);
+            color: black;
+        }
+
+        .form-container button {
+            background-color: #f5a623;
+            color: #333;
+            border: none;
+            cursor: pointer;
+            transition: background-color 0.3s;
+        }
+
+        .form-container button:hover {
+            background-color: #e5941f;
+        }
+
+        /* Testimonials Section */
+        .testimonials {
+            padding: 50px 20px;
+            background-color: rgba(0, 0, 0, 0.7);
+            text-align: center;
+        }
+
+        .testimonials h2 {
+            font-size: 2rem;
+            margin-bottom: 20px;
+            color: #f5a623;
+        }
+
+        .testimonials .testimonial-items {
+            display: flex;
+            justify-content: center;
+            flex-wrap: wrap;
+            gap: 20px;
+        }
+
+        .testimonials .testimonial-item {
+            background-color: rgba(255, 255, 255, 0.1);
+            padding: 20px;
+            border-radius: 10px;
+            max-width: 300px;
+            text-align: left;
+            transition: transform 0.3s, box-shadow 0.3s;
+        }
+
+        .testimonials .testimonial-item:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 6px 10px rgba(0, 0, 0, 0.15);
+        }
+
+        .testimonials .testimonial-item p {
+            font-size: 1rem;
+            color: #ddd;
+            margin-bottom: 10px;
+        }
+
+        .testimonials .testimonial-item strong {
+            color: #f5a623;
+        }
+
+        /* Featured Cars Section */
+        .featured-cars {
+            padding: 50px 20px;
+            background-color: rgba(0, 0, 0, 0.7);
+            text-align: center;
+        }
+
+        .featured-cars h2 {
+            font-size: 2rem;
+            margin-bottom: 20px;
+            color: #f5a623;
+        }
+
+        .featured-cars .car-items {
+            display: flex;
+            justify-content: center;
+            flex-wrap: wrap;
+            gap: 20px;
+        }
+
+        .featured-cars .car-item {
+            background-color: rgba(255, 255, 255, 0.1);
+            padding: 20px;
+            border-radius: 10px;
+            max-width: 300px;
+            text-align: left;
+            transition: transform 0.3s, box-shadow 0.3s;
+        }
+
+        .featured-cars .car-item:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 6px 10px rgba(0, 0, 0, 0.15);
+        }
+
+        .featured-cars .car-item img {
+            width: 100%;
+            border-radius: 10px;
+            margin-bottom: 10px;
+        }
+
+        .featured-cars .car-item h3 {
+            font-size: 1.2rem;
+            color: #f5a623;
+            margin-bottom: 10px;
+        }
+
+        .featured-cars .car-item p {
+            font-size: 1rem;
+            color: #ddd;
+        }
+
+        /* Why Choose Us Section */
+        .why-choose-us {
+            padding: 50px 20px;
+            background-color: rgba(0, 0, 0, 0.7);
+            text-align: center;
+        }
+
+        .why-choose-us h2 {
+            font-size: 2rem;
+            margin-bottom: 20px;
+            color: #f5a623;
+        }
+
+        .why-choose-us .features {
+            display: flex;
+            justify-content: center;
+            flex-wrap: wrap;
+            gap: 20px;
+        }
+
+        .why-choose-us .feature {
+            background-color: rgba(255, 255, 255, 0.1);
+            padding: 20px;
+            border-radius: 10px;
+            max-width: 300px;
+            text-align: left;
+            transition: transform 0.3s, box-shadow 0.3s;
+        }
+
+        .why-choose-us .feature:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 6px 10px rgba(0, 0, 0, 0.15);
+        }
+
+        .why-choose-us .feature h3 {
+            font-size: 1.2rem;
+            color: #f5a623;
+            margin-bottom: 10px;
+        }
+
+        .why-choose-us .feature p {
+            font-size: 1rem;
+            color: #ddd;
+        }
+
+        /* Footer */
+        .footer {
+            padding: 20px;
+            background-color: rgba(0, 0, 0, 0.8);
+            text-align: center;
+        }
+
+        .footer p {
+            font-size: 1rem;
+            color: #ddd;
+        }
+
+        .footer a {
+            color: #f5a623;
+            text-decoration: none;
+            transition: color 0.3s;
+        }
+
+        .footer a:hover {
+            color: #e5941f;
+        }
+
+        /* Animations */
+        @keyframes fadeInDown {
+            0% {
+                opacity: 0;
+                transform: translateY(-50px);
+            }
+            100% {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        @keyframes fadeInUp {
+            0% {
+                opacity: 0;
+                transform: translateY(50px);
+            }
+            100% {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        @keyframes fadeIn {
+            0% {
+                opacity: 0;
+            }
+            100% {
+                opacity: 1;
+            }
+        }
+
+        @keyframes slideInUp {
+            0% {
+                opacity: 0;
+                transform: translateY(50px);
+            }
+            100% {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Header Section -->
+    <header class="header">
+        <!-- Logo -->
+        <div class="logo">
+            <p> <strong>OneTapDrive</strong></p>
+        </div>
+
+        <!-- Navigation Menu -->
+        <nav class="navbar">
+            <ul>
+                <li><a href="final test.html">Home</a></li>
+                <li class="dropdown">
+                    <a href="#">Categories & Brands</a>
+                    <div class="dropdown-content">
+                        <h3>Car Categories</h3>
+                        <div class="categories">
+                            <a href="suv.html">SUV</a>
+                            <a href="sedan.html">Sedan</a>
+                            <a href="luxury.html">Luxury</a>
+                            <a href="crossover.html">Crossover</a>
+                            <a href="compact.html">Compact</a>
+                            <a href="convertible.html">Convertible</a>
+                            <a href="sport.html">Sport</a>
+                            <a href="electric.html">Electric</a>
+                        </div>
+                        <h3>Car Brands</h3>
+                        <div class="brands">
+                            <img src="https://example.com/toyota.png" alt="Toyota">
+                            <img src="https://example.com/bmw.png" alt="BMW">
+                            <img src="https://example.com/audi.png" alt="Audi">
+                            <img src="https://example.com/mercedes.png" alt="Mercedes">
+                            <img src="https://example.com/ford.png" alt="Ford">
+                            <img src="https://example.com/honda.png" alt="Honda">
+                        </div>
+                    </div>
+                </li>
+                <li><a href="services.html">Services</a></li>
+                <li><a href="contact.html">Contact</a></li>
+            </ul>
+        </nav>
+    </header>
+
+    <!-- Hero Section -->
+    <div class="hero">
+        <h1>Relaxed Journey Ever</h1>
+        <p>Experience the best car rental service with us. Book your car today and enjoy a hassle-free journey.</p>
+
+        <!-- Form Container -->
+        <div class="form-container">
+            <h2>Book Your Car Today!</h2>
+            <form action="https://formspree.io/f/movjeazz" method="POST">
+                <select name="car-type">
+                    <option>Select Your Car</option>
+                    <option>SUV</option>
+                    <option>Sedan</option>
+                    <option>Crossover</option>
+                    <option>Compact</option>
+                    <option>7Seater</option>
+                    <option>Luxury</option>
+                    <option>Convertible</option>
+                    <option>Sport</option>
+                    <option>Electric</option>
+                </select>
+                <input type="datetime-local" name="pickup-date-time" placeholder="Pickup Date & Time">
+                <input type="datetime-local" name="dropoff-date-time" placeholder="Dropoff Date & Time">
+                <input type="text" name="name" placeholder="Your Name">
+                <input type="email" name="email" placeholder="Email Address">
+                <input type="tel" name="phone" placeholder="Phone Number">
+                <button type="submit">Confirm Car Booking</button>
+            </form>
+        </div>
+    </div>
+
+    <!-- Testimonials Section -->
+    <section class="testimonials">
+        <h2>What Our Customers Say</h2>
+        <div class="testimonial-items">
+            <div class="testimonial-item">
+                <p>"Amazing service! The car was clean and delivered on time. Highly recommended!"</p>
+                <strong>- John Doe</strong>
+            </div>
+            <div class="testimonial-item">
+                <p>"Great experience! The staff was very helpful, and the prices are affordable."</p>
+                <strong>- Jane Smith</strong>
+            </div>
+            <div class="testimonial-item">
+                <p>"Best car rental service I've ever used. Will definitely book again!"</p>
+                <strong>- Mike Johnson</strong>
+            </div>
+        </div>
+    </section>
+
+    <!-- Featured Cars Section -->
+    <section class="featured-cars">
+        <h2>Featured Cars</h2>
+        <div class="car-items">
+            <div class="car-item">
+                <img src="Contact p/Suv.jpg" alt="Car 1">
+                <h3>SUV</h3>
+                <p>Spacious and comfortable, perfect for family trips.</p>
+            </div>
+            <div class="car-item">
+                <img src="Contact p/SEDAn.jpg" alt="Car 2">
+                <h3>Sedan</h3>
+                <p>Elegant and fuel-efficient, ideal for city driving.</p>
+            </div>
+            <div class="car-item">
+                <img src="Contact p/LUX.jpg" alt="Car 3">
+                <h3>Luxury</h3>
+                <p>Experience ultimate comfort and style.</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- Why Choose Us Section -->
+    <section class="why-choose-us">
+        <h2>Why Choose Us?</h2>
+        <div class="features">
+            <div class="feature">
+                <h3>24/7 Support</h3>
+                <p>We’re always here to help you, day or night.</p>
+            </div>
+            <div class="feature">
+                <h3>Affordable Prices</h3>
+                <p>Get the best deals without compromising on quality.</p>
+            </div>
+            <div class="feature">
+                <h3>Wide Range of Cars</h3>
+                <p>Choose from a variety of cars to suit your needs.</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <p>&copy; 2023 Car Rentals. All rights reserved. | <a href="#">Privacy Policy</a> | <a href="#">Terms of Service</a></p>
+    </footer>
+</body>
+</html>
